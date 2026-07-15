@@ -7,8 +7,8 @@
     --bg-card: #1c1c1e;
     --color-text: #f5f5f7;
     --color-muted: #a1a1a6;
-    --color-accent: #10b981; /* Verde esmeralda de impacto */
-    --color-whatsapp: #25d366; /* Verde oficial WhatsApp */
+    --color-accent: #10b981; 
+    --color-whatsapp: #25d366; 
     --font-main: 'Inter', sans-serif;
     --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -38,7 +38,7 @@ a {
 }
 
 /* ==========================================================================
-   BARRA DE NAVEGACIÓN COMPACTA Y MODERNA (RESPONSIVE)
+   BARRA DE NAVEGACIÓN COMPACTA Y MODERNA
    ========================================================================== */
 .navbar {
     display: flex;
@@ -213,6 +213,13 @@ a {
     gap: 30px;
 }
 
+/* Contenedor especial centrado para el showcase de gorras */
+.products-grid-special {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
 .product-card {
     background-color: var(--bg-card);
     border-radius: 12px;
@@ -220,6 +227,8 @@ a {
     position: relative;
     border: 1px solid rgba(255, 255, 255, 0.03);
     transition: var(--transition);
+    max-width: 380px;
+    width: 100%;
 }
 
 .product-card:hover {
@@ -239,7 +248,7 @@ a {
     text-transform: uppercase;
     padding: 4px 10px;
     border-radius: 4px;
-    z-index: 2;
+    z-index: 10;
     letter-spacing: 0.5px;
 }
 
@@ -253,13 +262,51 @@ a {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s ease;
 }
 
-.product-card:hover .product-img-wrapper img {
-    transform: scale(1.08);
+/* ==========================================================================
+   CARRUSEL DE IMÁGENES AUTOMÁTICO EN CSS PURO (CADA 5 SEGUNDOS)
+   ========================================================================== */
+.product-img-slider {
+    position: relative;
+    height: 340px;
+    overflow: hidden;
+    background-color: #000;
 }
 
+.slide-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    animation: carruselCss 15s infinite ease-in-out;
+}
+
+/* Distribución de tiempos para 3 imágenes (Total 15s -> 5s por imagen) */
+.slide-img:nth-child(1) {
+    animation-delay: 0s;
+}
+.slide-img:nth-child(2) {
+    animation-delay: 5s;
+}
+.slide-img:nth-child(3) {
+    animation-delay: 10s;
+}
+
+@keyframes carruselCss {
+    0% { opacity: 0; transform: scale(1); }
+    4% { opacity: 1; }
+    33.33% { opacity: 1; transform: scale(1.05); }
+    37.33% { opacity: 0; transform: scale(1.05); }
+    100% { opacity: 0; }
+}
+
+/* ==========================================================================
+   INFORMACIÓN DEL PRODUCTO & COMPRA
+   ========================================================================== */
 .product-info {
     padding: 20px;
 }
@@ -333,7 +380,7 @@ a {
 }
 
 /* ==========================================================================
-   PIE DE PÁGINA (FOOTER) & WHATSAPP
+   PIE DE PÁGINA (FOOTER)
    ========================================================================== */
 .footer {
     background-color: #050505;
@@ -424,6 +471,60 @@ a {
     color: rgba(255, 255, 255, 0.2);
 }
 
+/* ==========================================================================
+   ESTILOS PARA EL REPRODUCTOR DE MÚSICA CLÁSICA SUTIL
+   ========================================================================== */
+.music-player-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(28, 28, 30, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px 18px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 2000;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    max-width: 260px;
+}
+
+.music-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.music-icon {
+    color: var(--color-accent);
+    animation: pulse 2s infinite ease-in-out;
+}
+
+.music-player-container audio {
+    width: 100%;
+    height: 26px;
+    outline: none;
+}
+
+/* Rediseño básico nativo del reproductor de audio para verse más limpio */
+.music-player-container audio::-webkit-media-controls-enclosure {
+    background-color: transparent;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
 /* Responsive */
 @media (max-width: 992px) {
     .navbar {
@@ -453,5 +554,12 @@ a {
     }
     .products-section {
         padding: 60px 5%;
+    }
+    /* En teléfonos movemos el reproductor un poco arriba para que no estorbe */
+    .music-player-container {
+        bottom: 10px;
+        left: 10px;
+        max-width: 200px;
+        padding: 8px 12px;
     }
 }
